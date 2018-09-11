@@ -5,33 +5,34 @@ import java.util.Date;
 public class ExceptionResponse {
 
 	private Date timestamp;
-	private String mensaje;
-	private String detalles;
+
+	private String message;
+	private String details;
 	
-	public ExceptionResponse(Date timestamp, String mensaje, String detalles) {
+	public ExceptionResponse(Date timestamp, String message, String details) {
 		this.timestamp = timestamp;
-		this.mensaje = mensaje;
-		this.detalles = detalles;
+		this.message = message;
+		this.details = details;
 	}
-	
+
 	public Date getTimestamp() {
 		return timestamp;
 	}
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
-	public String getMensaje() {
-		return mensaje;
+
+	public String getMessage() {
+		return message;
 	}
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
+	public void setMessage(String message) {
+		this.message = message;
 	}
-	public String getDetalles() {
-		return detalles;
+	public String getDetails() {
+		return details;
 	}
-	public void setDetalles(String detalles) {
-		this.detalles = detalles;
+	public void setDetails(String details) {
+		this.details = details;
 	}
-	
-	
+
 }

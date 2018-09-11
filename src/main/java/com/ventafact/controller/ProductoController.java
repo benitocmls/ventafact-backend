@@ -30,53 +30,60 @@ import com.ventafact.model.Producto;
 import com.ventafact.service.IProductoService;
 
 @RestController
-@RequestMapping("/producto")
+@RequestMapping("/productos")
 public class ProductoController {
+
 	@Autowired
-	private IProductoService service;
-		
+	private IProductoService productoService;
+	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Producto>> listar(){
-		List<Producto> Productos = new ArrayList<>();
-		Productos = service.listar();
-		return new ResponseEntity<List<Producto>>(Productos, HttpStatus.OK);
+	public ResponseEntity<List<Producto>> getAll(){
+		List<Producto> producto = new ArrayList<>();
+		producto = productoService.getAll();
+		return new ResponseEntity<List<Producto>>(producto, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public Resource<Producto> listarId(@PathVariable("id") int id) {
-		Producto per = service.listarId(id);
-		if (per == null) {
+	public Resource<Producto> getById(@PathVariable("id") Integer id) {
+		Producto esp = productoService.getById(id);
+		if (esp == null) {
 			throw new ModeloNotFoundException("ID: " + id);
 		}
 		
-		Resource<Producto> resource = new Resource<Producto>(per);
-		ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).listarId(id));
+		Resource<Producto> resource = new Resource<Producto>(esp);
+		ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).getById(id));
+
 		resource.add(linkTo.withRel("Producto-resource"));
 		
 		return resource;
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> registrar(@Valid @RequestBody Producto Producto){
-		Producto med = new Producto();
-		med = service.registrar(Producto);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(med.getIdProducto()).toUri();
+
+	public ResponseEntity<Object> save(@Valid @RequestBody Producto Producto){
+		Producto esp = new Producto();
+		esp = productoService.save(Producto);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(esp.getIdProducto()).toUri();
+
 		return ResponseEntity.created(location).build();		
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> actualizar(@Valid @RequestBody Producto Producto) {		
-		service.modificar(Producto);
+	public ResponseEntity<Object> update(@Valid @RequestBody Producto Producto) {		
+		productoService.update(Producto);
+
 		return new ResponseEntity<Object>(HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public void eliminar(@PathVariable Integer id) {
-		Producto med = service.listarId(id);
-		if (med == null) {
+
+	public void delete(@PathVariable Integer id) {
+		Producto esp = productoService.getById(id);
+		if (esp == null) {
 			throw new ModeloNotFoundException("ID: " + id);
 		} else {
-			service.eliminar(id);
+			productoService.delete(id);
+
 		}
 	}
 }

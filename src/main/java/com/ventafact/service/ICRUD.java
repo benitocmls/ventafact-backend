@@ -2,15 +2,13 @@ package com.ventafact.service;
 
 import java.util.List;
 
-public interface ICRUD <T>{
 
-	T registrar(T t);
-	
-	T modificar(T t);
+public interface ICRUD<T> {
 
-	void eliminar(int id);
+	T save(T t);
+	T update(T t);
+	void delete(int id);
+	T getById(int id);
+	List<T> getAll();
 
-	T listarId(int id);
-
-	List<T> listar();
 }

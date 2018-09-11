@@ -2,7 +2,6 @@ package com.ventafact.service.impl;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,37 +12,35 @@ import com.ventafact.service.IVentaService;
 
 
 @Service
-public class VentaServiceImpl implements IVentaService{
+public class VentaServiceImpl implements IVentaService {
+
 	@Autowired
-	private IVentaDAO dao;
+	private IVentaDAO ventaDAO;
 	
 	@Override
-	public Venta registrar(Venta t) {
-		t.getDetalleVenta().forEach(x -> x.setVenta(t));
-		 dao.save(t);
-		// t.getDetalleVenta().forEach(e -> dao.save(t));
-		
-		return t;
+	public Venta save(Venta venta) {
+		return ventaDAO.save(venta);
 	}
 
 	@Override
-	public Venta modificar(Venta t) {
-		return dao.save(t);
+	public Venta update(Venta venta) {
+		return ventaDAO.save(venta);
 	}
 
 	@Override
-	public void eliminar(int id) {
-		dao.delete(id);
+	public void delete(int id) {
+		ventaDAO.delete(id);
 	}
 
 	@Override
-	public Venta listarId(int id) {
-		return dao.findOne(id);
+	public Venta getById(int id) {
+		return ventaDAO.findOne(id);
 	}
 
 	@Override
-	public List<Venta> listar() {
-		return dao.findAll();
+	public List<Venta> getAll() {
+		return ventaDAO.findAll();
 	}
-	
+
+
 }

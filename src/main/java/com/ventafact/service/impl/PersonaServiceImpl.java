@@ -8,33 +8,38 @@ import org.springframework.stereotype.Service;
 import com.ventafact.dao.IPersonaDAO;
 import com.ventafact.model.Persona;
 import com.ventafact.service.IPersonaService;
+
+
 @Service
-public class PersonaServiceImpl implements IPersonaService{
+public class PersonaServiceImpl implements IPersonaService {
+	
 	@Autowired
-	private IPersonaDAO dao;
+	private IPersonaDAO personaDAO;
 
 	@Override
-	public Persona registrar(Persona t) {
-		return dao.save(t);
+	public Persona save(Persona persona) {
+		return personaDAO.save(persona);
 	}
 
 	@Override
-	public Persona modificar(Persona t) {
-		return dao.save(t);
+	public Persona update(Persona persona) {
+		return personaDAO.save(persona);
 	}
 
 	@Override
-	public void eliminar(int id) {
-		dao.delete(id);
+	public void delete(int id) {
+		personaDAO.delete(id);
 	}
 
 	@Override
-	public Persona listarId(int id) {
-		return dao.findOne(id);
+	public Persona getById(int id) {
+		return personaDAO.findOne(id);
 	}
 
 	@Override
-	public List<Persona> listar() {
-		return dao.findAll();
+	public List<Persona> getAll() {
+		return personaDAO.findAll();
 	}
+
+
 }

@@ -10,32 +10,35 @@ import com.ventafact.model.Producto;
 import com.ventafact.service.IProductoService;
 
 @Service
-public class ProductoServiceImpl implements IProductoService{
+public class ProductoServiceImpl implements IProductoService {
+
 	@Autowired
-	private IProductoDAO dao;
-
+	private IProductoDAO productoDAO;
+	
 	@Override
-	public Producto registrar(Producto t) {
-		return dao.save(t);
+	public Producto save(Producto producto) {
+		return productoDAO.save(producto);
 	}
 
 	@Override
-	public Producto modificar(Producto t) {
-		return dao.save(t);
+	public Producto update(Producto producto) {
+		return productoDAO.save(producto);
 	}
 
 	@Override
-	public void eliminar(int id) {
-		dao.delete(id);
+	public void delete(int id) {
+		productoDAO.delete(id);
 	}
 
 	@Override
-	public Producto listarId(int id) {
-		return dao.findOne(id);
+	public Producto getById(int id) {
+		return productoDAO.findOne(id);
 	}
 
 	@Override
-	public List<Producto> listar() {
-		return dao.findAll();
+	public List<Producto> getAll() {
+		return productoDAO.findAll();
 	}
+
+
 }

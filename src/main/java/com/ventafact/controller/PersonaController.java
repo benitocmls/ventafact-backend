@@ -1,5 +1,6 @@
 package com.ventafact.controller;
 
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +9,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
+
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,53 +32,63 @@ import com.ventafact.model.Persona;
 import com.ventafact.service.IPersonaService;
 
 @RestController
-@RequestMapping("/persona")
+@RequestMapping("/personas")
 public class PersonaController {
+
 	@Autowired
-	private IPersonaService service;
-		
+	private IPersonaService personaService;
+	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Persona>> listar(){
-		List<Persona> Personas = new ArrayList<>();
-		Personas = service.listar();
-		return new ResponseEntity<List<Persona>>(Personas, HttpStatus.OK);
+	public ResponseEntity<List<Persona>> getAll() {
+		List<Persona> personas = new ArrayList<>();
+		personas = personaService.getAll();
+		
+		return new ResponseEntity<List<Persona>>(personas, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public Resource<Persona> listarId(@PathVariable("id") int id) {
-		Persona per = service.listarId(id);
-		if (per == null) {
+	public Resource<Persona> getById(@PathVariable("id") Integer id) {
+		Persona persona = personaService.getById(id);
+		
+		if (persona == null) {
 			throw new ModeloNotFoundException("ID: " + id);
 		}
 		
-		Resource<Persona> resource = new Resource<Persona>(per);
-		ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).listarId(id));
+		Resource<Persona> resource = new Resource<Persona>(persona);
+		ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).getById(id));
+
 		resource.add(linkTo.withRel("Persona-resource"));
 		
 		return resource;
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> registrar(@Valid @RequestBody Persona Persona){
-		Persona med = new Persona();
-		med = service.registrar(Persona);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(med.getIdPersona()).toUri();
-		return ResponseEntity.created(location).build();		
+	public ResponseEntity<Object> save(@Valid @RequestBody Persona Persona) {
+		Persona personaSave = new Persona();
+		personaSave = personaService.save(Persona);
+		
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(personaSave.getIdPersona()).toUri();
+		
+		return ResponseEntity.created(location).build();
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> actualizar(@Valid @RequestBody Persona Persona) {		
-		service.modificar(Persona);
+	public ResponseEntity<Object> update(@Valid @RequestBody Persona Persona) {
+		personaService.update(Persona);
+		
+
 		return new ResponseEntity<Object>(HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public void eliminar(@PathVariable Integer id) {
-		Persona med = service.listarId(id);
-		if (med == null) {
+	public void delete(@PathVariable Integer id) {
+		Persona Persona = personaService.getById(id);
+		
+		if (Persona == null) {
 			throw new ModeloNotFoundException("ID: " + id);
 		} else {
-			service.eliminar(id);
+			personaService.delete(id);
+
 		}
 	}
 }
