@@ -41,9 +41,9 @@ public class VentaController {
 	}
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> registrar(@Valid @RequestBody Venta venta){
-		Venta med = new Venta();
+		Venta med =  service.registrar(venta);
 		//System.out.println(venta.getDetalleVenta().get(0).getVenta().getIdVenta());
-		med = service.registrar(venta);
+		System.out.println("12321 "+med.getDetalleVenta().get(0).getVenta().getIdVenta());
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(med.getIdVenta()).toUri();
 		return ResponseEntity.created(location).build();		
 	}

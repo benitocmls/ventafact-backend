@@ -19,7 +19,11 @@ public class VentaServiceImpl implements IVentaService{
 	
 	@Override
 	public Venta registrar(Venta t) {
-		return dao.save(t);
+		t.getDetalleVenta().forEach(x -> x.setVenta(t));
+		 dao.save(t);
+		// t.getDetalleVenta().forEach(e -> dao.save(t));
+		
+		return t;
 	}
 
 	@Override

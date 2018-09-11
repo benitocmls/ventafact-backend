@@ -1,6 +1,7 @@
 package com.ventafact.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -29,11 +30,12 @@ public class Venta {
 	@JoinColumn(name="id_persona",nullable=false)
 	private Persona persona;
 	private double importe;
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name="id_venta", referencedColumnName="idVenta")
-	private List<DetalleVenta> detalleVenta;
+	@OneToMany(mappedBy = "venta", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REMOVE }, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<DetalleVenta> detalleVenta=new ArrayList<DetalleVenta>();
 	
 	 
+	
 	public int getIdVenta() {
 		return idVenta;
 	}
