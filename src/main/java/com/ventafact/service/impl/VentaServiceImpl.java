@@ -19,7 +19,9 @@ public class VentaServiceImpl implements IVentaService {
 	
 	@Override
 	public Venta save(Venta venta) {
-		return ventaDAO.save(venta);
+		venta.getDetalleVenta().forEach(x -> x.setVenta(venta));
+		ventaDAO.save(venta);
+		return venta;
 	}
 
 	@Override
